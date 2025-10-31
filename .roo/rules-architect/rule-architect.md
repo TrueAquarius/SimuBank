@@ -32,6 +32,7 @@ This document outlines the high-level architectural rules for this Next.js proje
 
 ## 4. Data Fetching & Persistence
 
+- **Database**: All data shall be stored in a single database. Right now, this single database is a MongoDB. All code shall be written for that MongoDB. At a later time other databases may be chosen. No need to create the code yet.
 - **Repository Pattern**: All database operations must be abstracted behind a repository layer. The interfaces for these repositories should be defined, while the concrete implementations must be located in a provider-specific subdirectory within `src/services/db/` (e.g., `src/services/db/mongodb/`). Application code (e.g., API routes, Server Components) must not interact directly with the database driver. This ensures the database can be swapped in the future with minimal refactoring.
 - **Server-Side Fetching**: All primary data fetching should be performed on the server within Server Components, calling the repository layer. This is the preferred method for fetching data for initial page loads.
 - **Client-Side Fetching**: For data that needs to be fetched on the client (e.g., after user interaction), use a dedicated data fetching hook. While not yet in the project, a library like SWR or TanStack Query is recommended for this purpose.
