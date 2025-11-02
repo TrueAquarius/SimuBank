@@ -1,44 +1,55 @@
 import { User } from '@/models/user';
 import { IUserRepository } from '../IUserRepository';
-import ADODB from 'node-adodb';
+import odbc from 'odbc';
 
-// Force 64-bit script engine if running on a 64-bit Node.js process
-// This is necessary to match the architecture of the MS Access Database Engine driver.
-const is64 = process.arch === 'x64';
-const connection = ADODB.open(`Provider=Microsoft.ACE.OLEDB.12.0;Data Source=${process.env.MSACCESS_PATH};Persist Security Info=False;`, is64);
+// The MS Access ODBC driver does not support SQLDescribeParam, which the odbc library
+// uses by default. We must disable it globally to prevent an error.
+odbc.SQL_DESC_PARAMETER = false;
+
+// Connection string for the installed 64-bit Microsoft Access ODBC driver
+const connectionString = `Driver={Microsoft Access Driver (*.mdb, *.accdb)};Dbq=${process.env.MSACCESS_PATH};`;
 
 export class AccessUserRepository implements IUserRepository {
   public async findUserByEmail(email: string): Promise<User | null> {
+    let connection;
     try {
-      const users: User[] = await connection.query(`SELECT id, [name], email, mobileNumber, [password] FROM users WHERE email = '${email}'`);
+      connection = await odbc.connect(connectionString);
+      const users: User[] = await connection.query(`SELECT id, [name], email, mobileNumber, [password] FROM users WHERE email = ?`, [email]);
+      
       if (users.length === 0) {
         return null;
       }
       return users[0];
     } catch (error) {
-      console.error('Error finding user by email in MS Access:', error);
+      console.error('Error finding user by email in MS Access (ODBC):', error);
       return null;
+    } finally {
+      if (connection) await connection.close();
     }
   }
 
   public async createUser(userData: Omit<User, 'id'>): Promise<User> {
+    let connection;
     const { name, email, mobileNumber, password } = userData;
     try {
-      const result = await connection.execute(
-        `INSERT INTO users ([name], email, mobileNumber, [password]) VALUES ('${name}', '${email}', '${mobileNumber}', '${password}')`
+      connection = await odbc.connect(connectionString);
+      await connection.query(
+        `INSERT INTO users ([name], email, mobileNumber, [password]) VALUES (?, ?, ?, ?)`,
+        [name, email, mobileNumber, password]
       );
       
-      // ADODB doesn't return the created user, so we have to query for it.
-      // This is not ideal, but a limitation of the library.
+      // The INSERT doesn't return the created user, so we query for it.
       const newUser = await this.findUserByEmail(email);
       if (!newUser) {
-        throw new Error('Failed to create user.');
+        throw new Error('Failed to create or find user after insertion.');
       }
       return newUser;
 
     } catch (error) {
-      console.error('Error creating user in MS Access:', error);
+      console.error('Error creating user in MS Access (ODBC):', error);
       throw new Error('Failed to create user.');
+    } finally {
+      if (connection) await connection.close();
     }
   }
 }
