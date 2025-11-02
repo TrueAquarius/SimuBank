@@ -1,17 +1,18 @@
 import { IUserRepository } from './IUserRepository';
-import { MongoUserRepository } from './mongodb/userRepository';
 import { AccessUserRepository } from './msaccess/userRepository';
 
-export function getUserRepository(): IUserRepository {
+export async function getUserRepository(): Promise<IUserRepository> {
   const dbProvider = process.env.DB_PROVIDER;
-
+  console.log(`[dbFactory] DB_PROVIDER: ${dbProvider}`);
   switch (dbProvider) {
     case 'mongodb':
+      const { MongoUserRepository } = await import('./mongodb/userRepository');
       return new MongoUserRepository();
     case 'msaccess':
       return new AccessUserRepository();
     default:
+      const { MongoUserRepository: DefaultMongoRepo } = await import('./mongodb/userRepository');
       // Default to MongoDB if not specified
-      return new MongoUserRepository();
+      return new DefaultMongoRepo();
   }
 }

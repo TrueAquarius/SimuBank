@@ -26,7 +26,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const userRepository = getUserRepository();
+    const userRepository = await getUserRepository();
     const existingUser = await userRepository.findUserByEmail(email);
 
     if (existingUser) {
