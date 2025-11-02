@@ -33,17 +33,22 @@ export class AccessUserRepository implements IUserRepository {
     const { name, email, mobileNumber, password } = userData;
     try {
       connection = await odbc.connect(connectionString);
+
       await connection.query(
         `INSERT INTO users ([name], email, mobileNumber, [password]) VALUES (?, ?, ?, ?)`,
         [name, email, mobileNumber, password]
       );
       
-      // The INSERT doesn't return the created user, so we query for it.
-      const newUser = await this.findUserByEmail(email);
-      if (!newUser) {
-        throw new Error('Failed to create or find user after insertion.');
+      // Retrieve the ID of the last inserted record
+      const result = await connection.query<{ id: number }>(`SELECT @@IDENTITY AS id`);
+
+      if (!result || result.length === 0) {
+        throw new Error('Failed to retrieve ID after insertion.');
       }
-      return newUser;
+      const newId = result[0].id;
+
+      // The user model expects a string ID.
+      return { id: newId.toString(), ...userData };
 
     } catch (error) {
       console.error('Error creating user in MS Access (ODBC):', error);
