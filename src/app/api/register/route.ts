@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { findUserByEmail, createUser } from '@/services/db/mongodb/userRepository';
+import { getUserRepository } from '@/services/db/dbFactory';
 import bcrypt from 'bcrypt';
 
 export async function POST(request: Request) {
@@ -26,7 +26,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const existingUser = await findUserByEmail(email);
+    const userRepository = getUserRepository();
+    const existingUser = await userRepository.findUserByEmail(email);
 
     if (existingUser) {
       return NextResponse.json(
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await createUser({
+    await userRepository.createUser({
       name,
       email,
       mobileNumber,

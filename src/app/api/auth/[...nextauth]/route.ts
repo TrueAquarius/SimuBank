@@ -1,12 +1,14 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { findUserByEmail } from '@/services/db/mongodb/userRepository';
+import { getUserRepository } from '@/services/db/dbFactory';
 import bcrypt from 'bcrypt';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import clientPromise from '@/lib/mongodb';
+import { NextAuthOptions } from 'next-auth';
 
-const handler = NextAuth({
-  adapter: MongoDBAdapter(clientPromise),
+const authOptions: NextAuthOptions = {
+  // @ts-ignore
+  adapter: process.env.DB_PROVIDER === 'mongodb' ? MongoDBAdapter(clientPromise) : undefined,
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -19,7 +21,8 @@ const handler = NextAuth({
           return null;
         }
 
-        const user = await findUserByEmail(credentials.email);
+        const userRepository = getUserRepository();
+        const user = await userRepository.findUserByEmail(credentials.email);
 
         if (user && user.password) {
           const isPasswordValid = await bcrypt.compare(
@@ -43,6 +46,8 @@ const handler = NextAuth({
   pages: {
     signIn: '/login',
   },
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

@@ -1,0 +1,41 @@
+import { User } from '@/models/user';
+import { IUserRepository } from '../IUserRepository';
+import ADODB from 'node-adodb';
+
+const connection = ADODB.open(`Provider=Microsoft.ACE.OLEDB.12.0;Data Source=${process.env.MSACCESS_PATH};Persist Security Info=False;`);
+
+export class AccessUserRepository implements IUserRepository {
+  public async findUserByEmail(email: string): Promise<User | null> {
+    try {
+      const users: User[] = await connection.query(`SELECT * FROM users WHERE email = "${email}"`);
+      if (users.length === 0) {
+        return null;
+      }
+      return users[0];
+    } catch (error) {
+      console.error('Error finding user by email in MS Access:', error);
+      return null;
+    }
+  }
+
+  public async createUser(userData: Omit<User, 'id'>): Promise<User> {
+    const { name, email, mobileNumber, password } = userData;
+    try {
+      const result = await connection.execute(
+        `INSERT INTO users (name, email, mobileNumber, [password]) VALUES ("${name}", "${email}", "${mobileNumber}", "${password}")`
+      );
+      
+      // ADODB doesn't return the created user, so we have to query for it.
+      // This is not ideal, but a limitation of the library.
+      const newUser = await this.findUserByEmail(email);
+      if (!newUser) {
+        throw new Error('Failed to create user.');
+      }
+      return newUser;
+
+    } catch (error) {
+      console.error('Error creating user in MS Access:', error);
+      throw new Error('Failed to create user.');
+    }
+  }
+}

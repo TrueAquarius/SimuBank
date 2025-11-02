@@ -1,6 +1,7 @@
 import clientPromise from '@/lib/mongodb';
 import { User } from '@/models/user';
 import { Collection, Db, ObjectId } from 'mongodb';
+import { IUserRepository } from '../IUserRepository';
 
 interface UserDocument {
   _id?: ObjectId;
@@ -23,38 +24,40 @@ async function getCollection(): Promise<Collection<UserDocument>> {
   return db.collection<UserDocument>(COLLECTION_NAME);
 }
 
-export async function findUserByEmail(email: string): Promise<User | null> {
-  const collection = await getCollection();
-  const userDoc = await collection.findOne({ email });
+export class MongoUserRepository implements IUserRepository {
+  public async findUserByEmail(email: string): Promise<User | null> {
+    const collection = await getCollection();
+    const userDoc = await collection.findOne({ email });
 
-  if (!userDoc || !userDoc._id) {
-    return null;
+    if (!userDoc || !userDoc._id) {
+      return null;
+    }
+
+    return {
+      id: userDoc._id.toHexString(),
+      name: userDoc.name,
+      email: userDoc.email,
+      mobileNumber: userDoc.mobileNumber,
+      password: userDoc.password,
+    };
   }
 
-  return {
-    id: userDoc._id.toHexString(),
-    name: userDoc.name,
-    email: userDoc.email,
-    mobileNumber: userDoc.mobileNumber,
-    password: userDoc.password,
-  };
-}
+  public async createUser(userData: Omit<User, 'id'>): Promise<User> {
+    const collection = await getCollection();
+    const { name, email, mobileNumber, password } = userData;
 
-export async function createUser(userData: Omit<User, 'id'>): Promise<User> {
-  const collection = await getCollection();
-  const { name, email, mobileNumber, password } = userData;
+    const userDocument: Omit<UserDocument, '_id'> = {
+      name,
+      email,
+      mobileNumber,
+      password,
+    };
 
-  const userDocument: Omit<UserDocument, '_id'> = {
-    name,
-    email,
-    mobileNumber,
-    password,
-  };
+    const result = await collection.insertOne(userDocument);
 
-  const result = await collection.insertOne(userDocument);
-
-  return {
-    ...userData,
-    id: result.insertedId.toHexString(),
-  };
+    return {
+      ...userData,
+      id: result.insertedId.toHexString(),
+    };
+  }
 }
