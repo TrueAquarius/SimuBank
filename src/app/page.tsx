@@ -8,9 +8,9 @@ export default function Home() {
         <h1 className="text-3xl font-bold tracking-tight text-gray-900 mt-8">
           Welcome to
         </h1>
-        <p className="mt-2 text-lg text-gray-700">
+        <div className="mt-2 text-lg text-gray-700">
           <Logo fontSize="6rem" />
-        </p>
+        </div>
         <div className="w-[33rem]">
           <p className="mt-4 text-lg text-gray-700">
             "SimuBank" is a ficticious Bank.
