@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "debug": "set NODE_OPTIONS=--inspect && next dev"
+    "debug": "set NODE_OPTIONS=--inspect && next dev",
+    "test": "jest"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.1",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^6.0.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -29,8 +31,10 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.0",
+    "jest": "^30.2.0",
     "selenium-webdriver": "^4.38.0",
     "tailwindcss": "^4",
+    "ts-jest": "^29.4.5",
     "typescript": "^5"
   }
 }
