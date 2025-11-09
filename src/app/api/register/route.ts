@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           message:
-            'Password must be at least 8 characters long, contain one uppercase letter, one number, and one special character.',
+            'Password must be at least 8 characters long and contain one uppercase letter, one number, and one special character.',
         },
         { status: 400 }
       );
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 
     if (existingUser) {
       return NextResponse.json(
-        { message: 'Email already in use.' },
+        { message: 'User with this email already exists.' },
         { status: 409 }
       );
     }

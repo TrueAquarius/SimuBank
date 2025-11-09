@@ -3,4 +3,15 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/tests/e2e/specs/**/*.spec.ts'],
   setupFiles: ['./tests/e2e/config/loadEnv.ts'],
+  testTimeout: 30000,
+  transform: {
+    '^.+\\.ts$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          moduleResolution: 'node',
+        },
+      },
+    ],
+  },
 };

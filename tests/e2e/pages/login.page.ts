@@ -16,6 +16,7 @@ export class LoginPage extends BasePage {
     }
 
     public async enterEmail(email: string) {
+        await this.driver.findElement(this.emailInput).clear();
         await this.driver.findElement(this.emailInput).sendKeys(email);
     }
 
