@@ -9,9 +9,9 @@
 - Follow the **Page Object Model (POM)** design pattern: Each page or significant component of the application shall be encapsulating the selectors and methods to interact with that page's elements. Store such page object models in ``/tests/e2e/pages``.
 - Functions which are common to several pages shall be placed in ``/test/e2e/pages/BasePage.ts``. All Page classes shall inherit from that BasePage class.
 
-## Test Scenarios
+## Test Data
 
-Each test scenario shall start with uploading the right database to MongoDB. Please read ``documents\testdata\Test Data Management.md`` for details.
+Select the right test data for each test scenario. Each test scenario shall start with uploading the right database to MongoDB. Please read ``documents\testdata\Test Data Management.md`` for details.
 
 
 

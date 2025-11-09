@@ -4,12 +4,17 @@
 
 **Description:** This test case verifies that a generic error message is displayed when a user tries to log in with an unregistered email address.
 
+**Test Data:**
+- **Data Set:** n/a (using an unregistered user)
+- **User:** `unregistered.user@example.com`
+- **Password:** `any_password`
+
 **Preconditions:**
 - The user is on the login page.
 
 **Steps:**
-1. Enter an unregistered email address in the "Email" field.
-2. Enter any password in the "Password" field.
+1. Enter an unregistered email address in the "Email" field. [`unregistered.user@example.com`]
+2. Enter any password in the "Password" field. [`any_password`]
 3. Click the "Login" button.
 
 **Expected Outcome:**
