@@ -11,7 +11,7 @@ interface UserDocument {
   password?: string;
 }
 
-const DB_NAME = process.env.MONGODB_DB_NAME || 'simubank';
+const DB_NAME = process.env.MONGODBDB_NAME || 'simubank';
 const COLLECTION_NAME = 'users';
 
 async function getDb(): Promise<Db> {
