@@ -78,7 +78,7 @@ export class DatabaseManager {
  * Setup database for a test suite
  */
 export async function setupDatabaseForSuite(connectionString: string, databaseName: string, dataSetName: string): Promise<DatabaseManager> {
-  const dataSetPath = `documents/testdata/${dataSetName}/simubank_default`;
+  const dataSetPath = `documents/testdata/${dataSetName}/dump`;
   
   const dbManager = new DatabaseManager({
     connectionString,
@@ -94,6 +94,6 @@ export async function setupDatabaseForSuite(connectionString: string, databaseNa
  * Cleanup database for a test suite
  */
 export async function cleanupDatabaseForSuite(dbManager: DatabaseManager): Promise<void> {
-    await dbManager.deleteDatabase();
+    //await dbManager.deleteDatabase();
     await dbManager.disconnect();
 }

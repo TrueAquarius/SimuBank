@@ -5,7 +5,9 @@ const options = new chrome.Options();
 // Add any desired options here, for example:
 // options.addArguments('--headless');
 
-export const driver = new Builder()
-    .forBrowser('chrome')
-    .setChromeOptions(options)
-    .build();
+export const buildDriver = () => {
+    return new Builder()
+        .forBrowser('chrome')
+        .setChromeOptions(options)
+        .build();
+};

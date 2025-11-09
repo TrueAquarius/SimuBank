@@ -1,11 +1,11 @@
-import { By, WebDriver } from 'selenium-webdriver';
+import { By, WebDriver, until } from 'selenium-webdriver';
 import { BasePage } from './BasePage';
 
 export class LoginPage extends BasePage {
     private emailInput = By.id('email');
     private passwordInput = By.id('password');
-    private loginButton = By.xpath("//button[text()='Log In']");
-    private errorMessage = By.css('p.text-red-600');
+    private loginButton = By.css('button[type="submit"]');
+    private errorMessage = By.css('p.text-red-600.text-center');
 
     constructor(driver: WebDriver) {
         super(driver);
@@ -28,6 +28,7 @@ export class LoginPage extends BasePage {
     }
 
     public async getErrorMessage(): Promise<string> {
-        return this.driver.findElement(this.errorMessage).getText();
+        const el = await this.driver.wait(until.elementLocated(this.errorMessage), 5000);
+        return el.getText();
     }
 }

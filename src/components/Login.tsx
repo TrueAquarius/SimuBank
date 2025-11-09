@@ -19,7 +19,7 @@ export default function Login() {
     }
     const errorParam = searchParams.get('error');
     if (errorParam === 'CredentialsSignin') {
-      setError('Invalid email or password.');
+      setError('Invalid credentials');
     }
   }, [searchParams]);
 
@@ -36,7 +36,7 @@ export default function Login() {
     });
 
     if (result?.error) {
-      setError('Invalid email or password.');
+      setError('Invalid credentials');
       setLoading(false);
     } else {
       router.replace('/dashboard');
