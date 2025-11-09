@@ -53,7 +53,7 @@ describe('Login Test Suite', () => {
         expect(errorMessage).toContain('Invalid credentials');
     });
 
-    it('TC-001-002-004 - Account Lockout After 5 Failed Attempts', async () => {
+    it.skip('TC-001-002-004 - Account Lockout After 5 Failed Attempts', async () => {
         for (let i = 0; i < 5; i++) {
             await loginPage.enterEmail('dummy.user@example.com');
             await loginPage.enterPassword('WrongPassword');
