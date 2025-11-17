@@ -18,7 +18,7 @@ Make sure you have the following installed on your local machine:
 First, clone the repository to your local machine:
 
 ```bash
-git clone https://strive.devops.t-systems.net/bitbucket/scm/vatool/mylittleapp.git
+git clone https://github.com/trueaquarius/simubank.git
 cd mylittleapp
 ```
 
@@ -30,11 +30,7 @@ If you are behind a corporate proxy, you may need to configure your package mana
 git config --global http.proxy <your-proxy-url>
 ```
 
-On T-Systems Nucleus Laptops this looks like this:
 
-```bash
-git config --global http.proxy http://sia-lb.telekom.de:8080/
-```
 
 
 ### Running the Application
