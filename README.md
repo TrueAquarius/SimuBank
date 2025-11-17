@@ -18,8 +18,7 @@ Make sure you have the following installed on your local machine:
 First, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/trueaquarius/simubank.git
-cd mylittleapp
+git clone https://github.com/trueaquarius/simubank.git .
 ```
 
 ### Proxy Settings (if applicable)
