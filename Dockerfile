@@ -1,6 +1,6 @@
 # SimuBank Development Container
 # Base image: Latest stable Ubuntu
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
 # Set environment variables to prevent interactive prompts during installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     unzip \
     git \
+    jq \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Install Google Chrome and WebDriver
@@ -27,8 +28,9 @@ RUN apt-get update && apt-get install -y google-chrome-stable \
 
 # Install ChromeDriver
 # Find the latest version of ChromeDriver
-RUN CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$(google-chrome --version | cut -d' ' -f3 | cut -d'.' -f1)) \
-    && wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
+RUN CHROME_MAJOR_VERSION=$(google-chrome --version | cut -d' ' -f3 | cut -d'.' -f1) \
+    && CHROMEDRIVER_URL=$(curl -sS "https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json" | jq -r --arg MAJOR_VERSION "$CHROME_MAJOR_VERSION" '.versions[] | select(.version | startswith($MAJOR_VERSION + ".")) | .downloads.chromedriver[] | select(.platform == "linux64") | .url' | tail -n 1) \
+    && wget -O /tmp/chromedriver.zip $CHROMEDRIVER_URL \
     && unzip /tmp/chromedriver.zip -d /usr/local/bin/ \
     && rm /tmp/chromedriver.zip
 
@@ -51,31 +53,9 @@ RUN apt-get update && apt-get install -y \
     mongodb-org-tools \
     && rm -rf /var/lib/apt/lists/*
 
-# 5. Application Setup
-# Create a working directory
-WORKDIR /app
+# 5. Create and configure a non-root user
+RUN groupadd --gid 1000 node \
+    && useradd --uid 1000 --gid node --shell /bin/bash --create-home node
 
-# Clone the SimuBank repository
-RUN git clone https://github.com/TrueAquarius/SimuBank.git .
-
-# Install npm dependencies
-RUN npm install
-
-# Create environment files from examples
-RUN cp .env.local.example .env.local \
-    && cp .env.test.example .env.test
-
-# 6. Container Configuration
-# Expose the Next.js application port
-EXPOSE 3000
-
-# Create a startup script
-RUN echo '#!/bin/bash\n\
-# Start MongoDB service\n\
-mongod --fork --logpath /var/log/mongodb.log\n\
-# Start the Next.js development server\n\
-npm run dev' > /app/start.sh \
-    && chmod +x /app/start.sh
-
-# Set the default command to run the startup script
-CMD ["/app/start.sh"]
+# Set the user
+USER node
