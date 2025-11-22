@@ -9,7 +9,7 @@ describe('Registration Test Suite', () => {
     let dbManager: DatabaseManager;
 
     beforeAll(async () => {
-        dbManager = await setupDatabaseForSuite(process.env.MONGODB_URL!, process.env.MONGODB_NAME!, 'Data Set 001 - Default Database');
+        dbManager = await setupDatabaseForSuite(process.env.MONGODB_URI!, process.env.MONGODB_NAME!, 'Data Set 001 - Default Database');
         driver = await buildDriver();
         registrationPage = new RegistrationPage(driver);
     });
