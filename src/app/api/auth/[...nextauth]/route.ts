@@ -38,7 +38,7 @@ async function getAuthOptions(): Promise<NextAuthOptions> {
     session: {
       strategy: 'jwt',
     },
-    secret: process.env.AUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET || 'super-secret-dev-key',
     pages: {
       signIn: '/login',
     },
