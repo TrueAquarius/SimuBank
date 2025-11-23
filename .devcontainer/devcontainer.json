@@ -6,10 +6,9 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "ms-vscode.vscode-typescript-next",
-        "bradlc.vscode-tailwindcss"
+        "orta.vscode-jest",
+        "mongodb.mongodb-vscode",
+        "rooveterinaryinc.roo-cline"
       ]
     }
   },

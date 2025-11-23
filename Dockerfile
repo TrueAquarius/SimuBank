@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     jq \
+    gnome-keyring \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Install Google Chrome and WebDriver
