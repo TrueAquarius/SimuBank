@@ -58,5 +58,9 @@ RUN apt-get update && apt-get install -y \
 RUN groupadd --gid 1000 node \
     && useradd --uid 1000 --gid node --shell /bin/bash --create-home node
 
+# 6. Create and configure workspace
+RUN mkdir -p /workspace && chown -R node:node /workspace
+WORKDIR /workspace
+
 # Set the user
 USER node
