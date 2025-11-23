@@ -1,4 +1,4 @@
-import { Builder } from 'selenium-webdriver';
+import { Builder, logging } from 'selenium-webdriver';
 import chrome from 'selenium-webdriver/chrome';
 
 const options = new chrome.Options();
@@ -15,17 +15,23 @@ options.setUserPreferences({
 
 // Schalte Features explizit aus, um Warnungen zu verhindern
 options.addArguments(
+  '--no-sandbox',
+  '--disable-dev-shm-usage',
   '--disable-save-password-bubble',
   '--disable-features=PasswordLeakDetection,PasswordManagerOnboarding',
   '--incognito'
 );
 
 // Optional: Entfernt das "Chrome wird von automatisierter Software gesteuert"-Banner
-options.excludeSwitches(['enable-automation', 'enable-logging']);
+options.excludeSwitches('enable-automation');
 
 export const buildDriver = () => {
+  const prefs = new logging.Preferences();
+  prefs.setLevel(logging.Type.BROWSER, logging.Level.ALL);
+
   return new Builder()
     .forBrowser('chrome')
     .setChromeOptions(options)
+    .setLoggingPrefs(prefs)
     .build();
 };
