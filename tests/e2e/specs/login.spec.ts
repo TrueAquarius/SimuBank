@@ -18,7 +18,9 @@ describe('Login Test Suite', () => {
         if (driver) {
             await driver.quit();
         }
-        await cleanupDatabaseForSuite(dbManager);
+        if (dbManager) {
+            await cleanupDatabaseForSuite(dbManager);
+        }
     });
 
     beforeEach(async () => {

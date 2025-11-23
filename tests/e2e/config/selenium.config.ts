@@ -4,7 +4,7 @@ import chrome from 'selenium-webdriver/chrome';
 const options = new chrome.Options();
 
 // Optional: Headless mode für CI
-// options.addArguments('--headless=new');
+options.addArguments('--headless=new');
 
 // Deaktiviere Passwortmanager & Leak Detection
 options.setUserPreferences({
