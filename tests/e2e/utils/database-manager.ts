@@ -41,7 +41,7 @@ export class DatabaseManager {
     if (!this.config.dataSetPath) {
         throw new Error("Data set path is not defined. Cannot restore database.");
     }
-    const command = `mongorestore --uri="${this.config.connectionString}" --nsInclude="${this.config.databaseName}.*" --nsFrom="${this.config.databaseName}.*" --nsTo="${this.config.databaseName}.*" "${this.config.dataSetPath}" --drop`;
+    const command = `mongorestore --uri="${this.config.connectionString}" --db=${this.config.databaseName} --drop "${this.config.dataSetPath}"`;
     console.log(`Executing: ${command}`);
     try {
       const { stdout, stderr } = await execPromise(command);
