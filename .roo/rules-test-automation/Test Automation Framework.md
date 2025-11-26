@@ -53,3 +53,22 @@ All automated test scripts shall be stored in folder ``/tests`` at the root of t
 *   **`pages/`**: This folder is for implementing the Page Object Model (POM) design pattern.
 *   **`utils/`**: This folder contains utility scripts that support the test automation framework, such as the `database-manager.ts`.
 *   **`config/`**: This folder holds configuration files for the test automation framework. This can include Selenium configuration, environment variables, and settings for different browsers or test environments.
+
+## Pages
+
+Review all relevant pages. Add an ID to those page elements which do not have an ID.
+
+## Page Objects
+
+Each page object shall have a menthod ``open()`` which navigates to that page. Example:
+
+```typescript
+public async open() {
+    await this.driver.get("http://localhost:3000/xyz");
+}
+```
+
+An example of a page object can be found here:
+
+``documents\templates\dummy.page.ts``
+

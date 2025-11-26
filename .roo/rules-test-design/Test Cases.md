@@ -9,7 +9,7 @@
 
 Some test steps may require entering data into a field. 
 - If you are certain which data to enter, provide the exact data in square brackets at the end of the line. 
-- If you are NOT certain which data to use, proovide brackjets with tbd.
+- If you are NOT certain which data to use, provide brackets with "tbd.".
 
 Example:
 ```markdown
