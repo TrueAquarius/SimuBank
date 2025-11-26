@@ -1,4 +1,4 @@
-# Architectural Principles for mylittleapp
+# Architectural Principles for SimuBank App
 
 This document outlines the high-level architectural rules for this Next.js project. These principles should be followed to ensure consistency, scalability, and maintainability.
 

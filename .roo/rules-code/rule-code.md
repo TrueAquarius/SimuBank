@@ -1,6 +1,6 @@
-# Coding Rules for mylittleapp
+# Coding Rules for SimuBank App
 
-This document outlines the coding standards and best practices for the `mylittleapp` project. Adhering to these rules ensures code quality, consistency, and maintainability.
+This document outlines the coding standards and best practices for the `SimuBank App` project. Adhering to these rules ensures code quality, consistency, and maintainability.
 
 ---
 
