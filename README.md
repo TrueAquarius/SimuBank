@@ -47,6 +47,12 @@ bun install
 ```
 
 
+2. Create .env.local and .env.test files
+
+Make a copy of ``.env.local.example``. Call it ``.env.local``. Fill in the correct settings.
+Make a copy of ``.env.test.example``. Call it ``.env.test``. Fill in the correct settings.
+
+
 2. Run the development server:
 
 ```bash
