@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     git \
     jq \
     gnome-keyring \
+    gosu \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Install Google Chrome and WebDriver
@@ -62,5 +63,10 @@ RUN groupadd --gid 1000 node \
 RUN mkdir -p /workspace && chown -R node:node /workspace
 WORKDIR /workspace
 
-# Set the user
-USER node
+# 7. Configure entrypoint
+COPY .devcontainer/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Set the default command to run when nothing is specified
+CMD ["npm", "install"]
