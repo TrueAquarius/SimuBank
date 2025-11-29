@@ -70,5 +70,5 @@ public async open() {
 
 An example of a page object can be found here:
 
-``documents\templates\dummy.page.ts``
+``documents\templates\dummy.page.ts.example``
 
