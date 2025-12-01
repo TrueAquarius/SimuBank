@@ -1,0 +1,14 @@
+.logo {
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-block;
+  letter-spacing: -0.5px;
+}
+
+.primary {
+  color: var(--color-brand-primary);
+}
+
+.secondary {
+  color: var(--color-brand-secondary);
+}

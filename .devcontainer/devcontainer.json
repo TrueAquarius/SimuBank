@@ -1,0 +1,18 @@
+{
+  "name": "SimuBank Dev Container",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "orta.vscode-jest",
+        "mongodb.mongodb-vscode",
+        "rooveterinaryinc.roo-cline"
+      ]
+    }
+  },
+  "forwardPorts": [3000],
+  "postCreateCommand": "npm install",
+  "remoteUser": "node"
+}
